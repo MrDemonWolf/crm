@@ -73,8 +73,6 @@ switch (process.env.NODE_ENV) {
 /**
  * Primary app routes.
  */
-app.use("/", require("./routes"));
-app.use("/admin/import", cfZeroTrust, require("./routes/admin/import"));
 
 /**
  * Handle 404 errors.
