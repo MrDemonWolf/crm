@@ -14,7 +14,6 @@ const companySchema = new Schema(
     },
     phoneNumber: {
       type: String,
-      required: true,
       trim: true
     },
     address: {
@@ -24,7 +23,7 @@ const companySchema = new Schema(
       zip: String
     }
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 module.exports = mongoose.model("Company", companySchema);

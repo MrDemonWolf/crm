@@ -22,7 +22,7 @@ const activitySchema = new mongoose.Schema(
       required: true
     }
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 module.exports = mongoose.model("Activity", activitySchema);

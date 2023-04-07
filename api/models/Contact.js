@@ -57,7 +57,7 @@ const contactSchema = new Schema(
     },
     billingId: String
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 module.exports = mongoose.model("Contact", contactSchema);
