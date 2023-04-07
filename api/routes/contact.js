@@ -26,11 +26,36 @@ const Quote = require("../models/Quote");
  */
 router.get("/", async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1; // default to page 1 if not specified
+    const perPage = parseInt(req.query.perPage) || 10; // default to 10 items per page if not specified
+
+    const startIndex = (page - 1) * perPage;
+    const endIndex = page * perPage;
+
     const contacts = await Contact.find({})
       .populate("company activityHistory quote")
-      .select("-__v");
+      .sort({ createdAt: -1 })
+      .skip(startIndex)
+      .limit(perPage);
 
-    res.status(200).json(contacts);
+    const totalContacts = await Contact.countDocuments({});
+
+    const pagination = {
+      currentPage: page,
+      perPage,
+      totalContacts,
+      totalPages: Math.ceil(totalContacts / perPage),
+      endIndex
+    };
+
+    if (page > pagination.totalPages) {
+      return res.status(404).json({
+        code: "NOT_FOUND",
+        error: "Page not found."
+      });
+    }
+
+    res.status(200).json({ contacts, pagination });
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -48,6 +73,8 @@ router.get("/", async (req, res) => {
  */
 router.post("/", async (req, res) => {
   try {
+    // TODO: Add validation
+
     const { firstName, lastName, email, phoneNumber } = req.body;
 
     const contact = new Contact({
@@ -57,7 +84,7 @@ router.post("/", async (req, res) => {
       phoneNumber
     });
 
-    const newContact = await contact.save().select("-__v");
+    const newContact = await contact.save();
 
     res.status(201).json(newContact);
   } catch (err) {
@@ -68,8 +95,5 @@ router.post("/", async (req, res) => {
     });
   }
 });
-
-/**
- * @route /contact/:id/company
 
 module.exports = router;
