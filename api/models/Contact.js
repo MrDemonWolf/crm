@@ -22,11 +22,7 @@ const contactSchema = new Schema(
       lowercase: true,
       required: true
     },
-    phoneNumber: {
-      type: String,
-      required: true,
-      trim: true
-    },
+    phoneNumber: String,
     company: {
       type: Schema.Types.ObjectId,
       ref: "Company"
@@ -37,9 +33,15 @@ const contactSchema = new Schema(
         ref: "Activity"
       }
     ],
-    proposalSent: Boolean,
+    proposalSent: {
+      type: Boolean,
+      default: false
+    },
     proposalSentAt: Date,
-    quoteSent: Boolean,
+    quoteSent: {
+      type: Boolean,
+      default: false
+    },
     quoteSentAt: Date,
     quote: {
       type: Schema.Types.ObjectId,
@@ -49,8 +51,13 @@ const contactSchema = new Schema(
       type: Boolean,
       default: true
     },
-    isCustomer: Boolean,
+    isCustomer: {
+      type: Boolean,
+      default: false
+    },
     billingId: String
   },
   { timestamps: true }
 );
+
+module.exports = mongoose.model("Contact", contactSchema);

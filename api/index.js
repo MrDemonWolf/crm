@@ -25,9 +25,9 @@ const app = express();
 /**
  * Connect to MongoDB.
  */
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true
-});
+mongoose.set("strictQuery", false);
+
+mongoose.connect(process.env.MONGODB_URI, {});
 
 mongoose.connection.on("error", err => {
   consola.error(err);
@@ -41,7 +41,7 @@ mongoose.connection.on("error", err => {
  * Express configuration.
  */
 app.set("host", process.env.IP || "127.0.0.1");
-app.set("port", process.env.PORT || 3030);
+app.set("port", process.env.PORT || 8080);
 app.use(lusca.xframe("SAMEORIGIN"));
 app.use(lusca.xssProtection(true));
 lusca.referrerPolicy("same-origin");
@@ -73,6 +73,17 @@ switch (process.env.NODE_ENV) {
 /**
  * Primary app routes.
  */
+const contactRoutes = require("./routes/contact");
+const companyRoutes = require("./routes/company");
+
+app.all("/", (req, res) => {
+  res.json({
+    message: "Welcome to MrDemonWOlf, Inc. CRM API"
+  });
+});
+
+app.use("/contact", contactRoutes);
+app.use("/company", companyRoutes);
 
 /**
  * Handle 404 errors.
@@ -107,5 +118,19 @@ process.on("SIGINT", () => {
     process.exit(0);
   });
 });
+
+// mailer
+//   .sendTransacEmail({
+//     sender: {
+//       name: "MrDemonWolf",
+//       email: "info@mrdemonwolf.com"
+//     },
+//     to: [{ email: "nathanial.henniges@mrdemonwolf.com" }],
+//     subject: "Hello from the Node.js SDK!",
+//     htmlContent:
+//       "<html><body><h1>This is a transactional email {{params.bodyMessage}}</h1></body></html>"
+//   })
+//   .then(console.log)
+//   .catch(console.log);
 
 module.exports = app;
