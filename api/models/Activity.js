@@ -12,10 +12,6 @@ const activitySchema = new mongoose.Schema(
     notes: {
       type: String
     },
-    file: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "File"
-    },
     customer: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Customer",
