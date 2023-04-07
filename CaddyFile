@@ -1,0 +1,3 @@
+crm.localhost {
+  reverse_proxy localhost:3000
+}
