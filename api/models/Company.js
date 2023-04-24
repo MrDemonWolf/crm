@@ -12,18 +12,23 @@ const companySchema = new Schema(
       type: String,
       required: true
     },
-    phoneNumber: {
-      type: String,
-      trim: true
-    },
     address: {
       street: String,
       city: String,
       state: String,
       zip: String
-    }
+    },
+    website: String,
+    notes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Note"
+      }
+    ]
   },
   { timestamps: true, versionKey: false }
 );
+
+mongoose.set("debug", true);
 
 module.exports = mongoose.model("Company", companySchema);

@@ -50,13 +50,39 @@ router.get("/", async (req, res) => {
     };
 
     if (page > pagination.totalPages) {
-      return res.status(404).json({
-        code: "NOT_FOUND",
-        error: "Page not found."
-      });
+      return res.status(200).json({ contacts: [], pagination: false });
     }
 
     res.status(200).json({ companies, pagination });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      code: "SERVER_ERROR",
+      error: "Internal Server Error."
+    });
+  }
+});
+
+/**
+ * @route /company/:company_id
+ * @description Allows business owner to get a company by id.
+ * @access Private
+ * @type GET
+ */
+router.get("/:company_id", async (req, res) => {
+  try {
+    const { company_id } = req.params;
+
+    const company = await Company.findById(company_id);
+
+    if (!company) {
+      return res.status(404).json({
+        code: "NOT_FOUND",
+        error: "Company not found."
+      });
+    }
+
+    res.status(200).json(company);
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -108,17 +134,18 @@ router.post("/", async (req, res) => {
 });
 
 /**
- * @route /company/:copmany_id/link
+ * @route /company/link/?company_id=&contact_id=
  * @description Allows business owner to link company to contact with contact id.
  * @access Private
  * @type PUT
  */
-router.put("/:copmany_id/link", async (req, res) => {
+router.put("/link", async (req, res) => {
   try {
-    const { copmany_id } = req.params;
-    const { contact_id } = req.body;
+    const { company_id, contact_id } = req.query;
 
-    const company = await Company.findById(copmany_id);
+    // TODO: Add validation
+
+    const company = await Company.findById(company_id);
 
     if (!company) {
       return res.status(404).json({
@@ -136,11 +163,25 @@ router.put("/:copmany_id/link", async (req, res) => {
       });
     }
 
+    /**
+     * Check if company is already linked to a contact.
+     */
+    if (company.contact) {
+      return res.status(400).json({
+        code: "COMPANY_ALREADY_LINKED",
+        error: "Company is already linked to a contact."
+      });
+    }
+
     company.contact = contact.id;
 
     await company.save();
 
-    res.status(200).json(company);
+    res.status(200).json({
+      code: "COMPANY_LINKED",
+      message: "Company successfully linked to contact.",
+      company
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json({

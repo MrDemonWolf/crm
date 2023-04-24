@@ -22,7 +22,12 @@ const contactSchema = new Schema(
       lowercase: true,
       required: true
     },
-    phoneNumber: String,
+    phoneNumber: {
+      type: String,
+      minlength: 9,
+      maxlength: 10,
+      trim: true
+    },
     company: {
       type: Schema.Types.ObjectId,
       ref: "Company"
@@ -47,15 +52,17 @@ const contactSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Quote"
     },
-    isLead: {
-      type: Boolean,
-      default: true
+    status: {
+      type: String,
+      enum: ["Lead", "Proposal", "Quote", "Won", "Lost"]
     },
-    isCustomer: {
-      type: Boolean,
-      default: false
-    },
-    billingId: String
+    billingId: String,
+    notes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Note"
+      }
+    ]
   },
   { timestamps: true, versionKey: false }
 );

@@ -49,13 +49,39 @@ router.get("/", async (req, res) => {
     };
 
     if (page > pagination.totalPages) {
-      return res.status(404).json({
-        code: "NOT_FOUND",
-        error: "Page not found."
-      });
+      return res.status(200).json({ contacts: [], pagination: false });
     }
 
     res.status(200).json({ contacts, pagination });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      code: "SERVER_ERROR",
+      error: "Internal Server Error."
+    });
+  }
+});
+
+/**
+ * @route /contact/:id
+ * @description Allows business owner to get a single contact.
+ * @access Private
+ * @type GET
+ */
+router.get("/:id", async (req, res) => {
+  try {
+    const contact = await Contact.findById(req.params.id)
+      .populate("company activityHistory quote")
+      .exec();
+
+    if (!contact) {
+      return res.status(404).json({
+        code: "NOT_FOUND",
+        error: "Contact not found."
+      });
+    }
+
+    res.status(200).json(contact);
   } catch (err) {
     console.log(err);
     res.status(500).json({
