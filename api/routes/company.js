@@ -13,6 +13,7 @@ const Quote = require("../models/Quote");
 /**
  * Load input validators.
  */
+const validateCreateCompanyInput = require("../validation/company/create-company");
 
 /**
  * Load Email Templates.
@@ -100,25 +101,44 @@ router.get("/:company_id", async (req, res) => {
  */
 router.post("/", async (req, res) => {
   try {
-    // TODO: Add validation
+    const { errors, isValid } = validateCreateCompanyInput(req.body);
+
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
     const {
       name,
-      phoneNumber,
       addressStreet,
       addressCity,
       addressState,
-      addressZip
+      addressZip,
+      website
     } = req.body;
+
+    /**
+     * Check if company already exists.
+     */
+    const companyExists = await Company.findOne({
+      name
+    });
+
+    if (companyExists) {
+      return res.status(400).json({
+        code: "ALREADY_EXISTS",
+        error: "Company already exists."
+      });
+    }
 
     const company = new Company({
       name,
-      phoneNumber,
       address: {
         addressStreet,
         addressCity,
         addressState,
         addressZip
-      }
+      },
+      website
     });
 
     const newCompany = await company.save();
