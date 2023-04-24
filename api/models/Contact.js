@@ -24,8 +24,6 @@ const contactSchema = new Schema(
     },
     phoneNumber: {
       type: String,
-      minlength: 9,
-      maxlength: 10,
       trim: true
     },
     company: {

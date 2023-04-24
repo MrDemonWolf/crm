@@ -13,6 +13,7 @@ const Quote = require("../models/Quote");
 /**
  * Load input validators.
  */
+const validateCreateContactInput = require("../validation/contact/ceate-contact");
 
 /**
  * Load Email Templates.
@@ -99,7 +100,26 @@ router.get("/:id", async (req, res) => {
  */
 router.post("/", async (req, res) => {
   try {
-    // TODO: Add validation
+    const { errors, isValid } = validateCreateContactInput(req.body);
+
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    /**
+     * Check if contact already exists.
+     */
+
+    const contactExists = await Contact.findOne({
+      email: req.body.email
+    });
+
+    if (contactExists) {
+      return res.status(400).json({
+        code: "DUPLICATE",
+        error: "Contact already exists."
+      });
+    }
 
     const { firstName, lastName, email, phoneNumber } = req.body;
 

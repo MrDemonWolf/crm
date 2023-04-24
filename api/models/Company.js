@@ -29,6 +29,4 @@ const companySchema = new Schema(
   { timestamps: true, versionKey: false }
 );
 
-mongoose.set("debug", true);
-
 module.exports = mongoose.model("Company", companySchema);
