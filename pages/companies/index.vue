@@ -3,14 +3,14 @@ import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/css/index.css";
 import { gray, indigo } from "tailwindcss/colors";
 
-import { useCompaniesStore } from "~/stores/companies";
+import { useCompanyStore } from "~/stores/company";
 
 const isLoading = ref(true);
 
-const companies = useCompaniesStore();
+const companies = useCompanyStore();
 
 const fetchCompanies = async () => {
-  await companies.fetchCompanies().then((companies) => {
+  await companies.fetchCompanies().then(() => {
     isLoading.value = false;
   });
 };
