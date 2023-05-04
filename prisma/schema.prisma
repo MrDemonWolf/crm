@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ContactStatus {
+  lead
+  proposal
+  won
+  lost
+}
+
+model Contact {
+  id              String            @unique @default(uuid())
+  firstName       String
+  lastName        String
+  email           String
+  phoneNumber     String?
+  company         Company?          @relation(fields: [companyId], references: [id])
+  companyId       String?           @unique
+  ActivityHistory ActivityHistory[]
+  proposalSentAt  DateTime?
+  status          ContactStatus     @default(lead)
+  billingId       String?
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @default(now()) @map("updated_at")
+
+  @@index([firstName, lastName], name: "contact_name")
+  @@index([email], name: "contact_email")
+}
+
+model Note {
+  id        String   @unique @default(uuid())
+  note      String
+  project   Project  @relation(fields: [projectId], references: [id])
+  projectId String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+  Company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
+}
+
+model Company {
+  id        String          @unique @default(uuid())
+  name      String          @unique
+  address   CompanyAddress? @relation(fields: [addressId], references: [id])
+  addressId String?
+  website   String
+  notes     Note[]
+  contact   Contact?
+  projects  Project[]
+  createdAt DateTime        @default(now()) @map("created_at")
+  updatedAt DateTime        @default(now()) @map("updated_at")
+
+  @@index([name], name: "company_name")
+}
+
+model CompanyAddress {
+  id            String    @unique @default(uuid())
+  streetAddress String
+  city          String
+  state         String
+  zipCode       String
+  country       String
+  company       Company[]
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @default(now()) @map("updated_at")
+}
+
+enum ActivityTypes {
+  Email
+  Call
+  Meeting
+}
+
+model ActivityHistory {
+  id        String        @unique @default(uuid())
+  contact   Contact       @relation(fields: [contactId], references: [id])
+  contactId String
+  type      ActivityTypes
+  note      String
+  createdAt DateTime      @default(now()) @map("created_at")
+  updatedAt DateTime      @default(now()) @map("updated_at")
+}
+
+// model proposal
+
+model Project {
+  id        String   @unique @default(uuid())
+  name      String
+  company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
+  note      Note[]
+  notionUrl String?
+  tasks     Tasks[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+}
+
+model Tasks {
+  id        String   @unique @default(uuid())
+  task      String
+  completed Boolean
+  project   Project? @relation(fields: [projectId], references: [id])
+  projectId String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+}

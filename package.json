@@ -1,0 +1,39 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "db-migrate": "prisma migrate",
+    "db-generate": "prisma generate",
+    "db-studio": "prisma studio"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "@nuxt/image-edge": "^1.0.0-28020728.5df24eb",
+    "@nuxtjs/tailwindcss": "^6.6.7",
+    "@types/node": "^18",
+    "autoprefixer": "^10.4.14",
+    "nuxt": "^3.4.2",
+    "postcss": "^8.4.23",
+    "prisma": "^4.13.0",
+    "tailwindcss": "^3.3.1"
+  },
+  "dependencies": {
+    "@headlessui/vue": "^1.7.13",
+    "@heroicons/vue": "^2.0.17",
+    "@pinia/nuxt": "^0.4.9",
+    "@prisma/client": "^4.13.0",
+    "nuxt-headlessui": "^1.1.4",
+    "pinia": "^2.0.35",
+    "query-string": "^8.1.0",
+    "vue-loading-overlay": "^6.0.3",
+    "zod": "^3.21.4"
+  },
+  "overrides": {
+    "vue": "latest"
+  }
+}
