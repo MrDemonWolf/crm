@@ -1,7 +1,5 @@
 import { defineStore } from "pinia";
 
-// import { ContactWithCompany } from "@/db";
-
 import { CompanyWithAddressAndContacts } from "@/db";
 
 type CompanyStore = {
@@ -12,7 +10,7 @@ type CompanyStore = {
   };
 };
 
-export const useCompaniesStore = defineStore("companies", {
+export const useCompanyStore = defineStore("company", {
   state: () =>
     ({
       data: [],
