@@ -3,23 +3,26 @@ async function main() {
 
   const prisma = new PrismaClient();
 
+  // console.log("Purge database...");
+  // await prisma.contact.deleteMany();
+  // await prisma.company.deleteMany();
+  // console.log("Purge complete");
+
   console.log("Seeding database...");
 
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 30; i++) {
     const { faker } = require("@faker-js/faker");
     const contact = {
-      firstName: faker.name.firstName(),
+      firstName: faker.[name].firstName(),
       lastName: faker.name.lastName(),
       email: faker.internet.email(),
       phoneNumber: faker.phone.number(),
-      createdAt: faker.date.past(30),
-      updatedAt: faker.date.past(30),
       company: {
         create: {
           name: faker.company.name(),
           address: {
             create: {
-              streetAddress: faker.address.streetAddress(),
+              street: faker.address.streetAddress(),
               city: faker.address.city(),
               state: faker.address.state(),
               zipCode: faker.address.zipCode(),
@@ -27,8 +30,6 @@ async function main() {
             },
           },
           website: faker.internet.url(),
-          createdAt: faker.date.past(30),
-          updatedAt: faker.date.past(30),
         },
       },
     };
