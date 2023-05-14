@@ -1,13 +1,8 @@
 import { defineStore } from "pinia";
 
-import { ContactWithCompany } from "@/db";
+import { ContactWithCompany } from "../../server/db";
 
-enum ContactStatus {
-  lead = "lead",
-  proposal = "proposal",
-  won = "won",
-  lost = "lost",
-}
+import { Contact, ContactStatus } from "@prisma/client";
 
 type ContactStore = {
   data: ContactWithCompany[];
@@ -15,12 +10,18 @@ type ContactStore = {
   pagination: {
     cursor: string;
   };
-  contact: ContactWithCompany | null;
+  contact: Contact | null;
   filter: {
     status: ContactStatus | null;
   };
   showAddContactModal: {
     value: boolean;
+  };
+  alert: {
+    header: string;
+    message: string;
+    showSuccess: boolean;
+    showError: boolean;
   };
 };
 
@@ -38,6 +39,12 @@ export const useContactStore = defineStore("contacts", {
       },
       showAddContactModal: {
         value: false,
+      },
+      alert: {
+        header: "",
+        message: "",
+        showSuccess: false,
+        showError: false,
       },
     } as ContactStore),
 
@@ -68,28 +75,13 @@ export const useContactStore = defineStore("contacts", {
       this.contact = contact;
     },
 
-    async fetchFilterContacts(status: String) {
-      const { contacts, total, pagination, filter } = await fetch(
+    async fetchFilteredContacts(status: String) {
+      const { contacts, total, pagination } = await fetch(
         `/api/contact?status=${status}`
       ).then((res) => res.json());
       this.data = contacts;
       this.total = total;
       this.pagination.cursor = pagination.cursor;
-      this.filter;
     },
-    async fetchMoreFilterContacts(status: String) {
-      const { contacts, total, pagination, filter } = await fetch(
-        `/api/contact?status=${status}&cursor=${this.pagination.cursor}`
-      ).then((res) => res.json());
-      this.data = contacts;
-      this.total = total;
-      this.pagination.cursor = pagination.cursor;
-      this.filter;
-    },
-  },
-
-  getters: {
-    getContactById: (state) => (id: string) =>
-      state.data.find((contact) => contact.id === id),
   },
 });

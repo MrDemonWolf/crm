@@ -12,7 +12,6 @@
     "db-studio": "prisma studio"
   },
   "devDependencies": {
-    "@faker-js/faker": "^7.6.0",
     "@nuxt/image-edge": "^1.0.0-28020728.5df24eb",
     "@nuxtjs/tailwindcss": "^6.6.7",
     "@types/node": "^18",
@@ -20,13 +19,17 @@
     "nuxt": "^3.4.2",
     "postcss": "^8.4.23",
     "prisma": "^4.13.0",
-    "tailwindcss": "^3.3.1"
+    "tailwindcss": "^3.3.2"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.13",
     "@heroicons/vue": "^2.0.17",
     "@pinia/nuxt": "^0.4.9",
     "@prisma/client": "^4.13.0",
+    "@tailvue/nuxt": "^0.1.68",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.3",
+    "@tailwindcss/typography": "^0.5.9",
     "nuxt-headlessui": "^1.1.4",
     "pinia": "^2.0.35",
     "query-string": "^8.1.0",

@@ -5,8 +5,10 @@ import { gray, indigo } from "tailwindcss/colors";
 
 import { useContactStore } from "@/stores/contact";
 
+import { TrashIcon } from "@heroicons/vue/24/solid";
+
 const isLoading = ref(true);
-const filterSelect = ref("lead");
+const filterStatusSelect = ref("lead");
 
 const contacts = useContactStore();
 
@@ -23,10 +25,10 @@ const fetchMoreContacts = async () => {
   });
 };
 
-const onFilterSelectChange = async (e: Event) => {
+const onFilterStatusSelectChange = async (e: Event) => {
   isLoading.value = true;
-  const filterSelectValue = (e.target as HTMLSelectElement).value;
-  await contacts.fetchFilterContacts(filterSelectValue as string);
+  const filterStatusValue = (e.target as HTMLSelectElement).value;
+  await contacts.fetchFilteredContacts(filterStatusValue as string);
   isLoading.value = false;
 };
 useHead({
@@ -41,7 +43,6 @@ useHead({
 });
 
 onMounted(() => {
-  console.log("mounted");
   fetchContacts();
 });
 </script>
@@ -67,8 +68,8 @@ onMounted(() => {
               <div class="flex flex-row mb-1 sm:mb-0">
                 <div class="relative">
                   <select
-                    v-model="filterSelect"
-                    @change="onFilterSelectChange"
+                    v-model="filterStatusSelect"
+                    @change="onFilterStatusSelectChange"
                     class="block w-full h-full px-4 py-2 pr-8 leading-tight text-white bg-gray-600 border-t border-b border-r border-gray-800 rounded-r appearance-none sm:rounded-r-none sm:border-r-0 focus:outline-none focus:border-l focus:border-r focus:bg-gray-600 focus:border-gray-700"
                   >
                     <option value="all">All</option>
@@ -138,7 +139,7 @@ onMounted(() => {
                       Status
                     </th>
                     <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
-                      <span class="sr-only">Edit</span>
+                      <span class="sr-only">Delete</span>
                     </th>
                   </tr>
                 </thead>
@@ -203,8 +204,9 @@ onMounted(() => {
                       class="relative py-4 pl-3 pr-4 text-sm font-medium text-right whitespace-nowrap sm:pr-0"
                     >
                       <a href="#" class="text-indigo-400 hover:text-indigo-300"
-                        >Edit<span class="sr-only"
-                          >, {{ contact.firstName }}</span
+                        ><TrashIcon class="w-6 h-6 text-red-900" /><span
+                          class="sr-only"
+                          >Delete {{ contact.firstName }}</span
                         ></a
                       >
                     </td>
@@ -239,4 +241,5 @@ onMounted(() => {
     </div>
   </div>
   <ContactsCreateContact />
+  <SharedAlertsSuccess />
 </template>

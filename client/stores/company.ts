@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import { CompanyWithAddressAndContacts } from "@/db";
+import { CompanyWithAddressAndContacts, CompanyWithContacts } from "@/db";
 
 type CompanyStore = {
   data: CompanyWithAddressAndContacts[];
@@ -8,6 +8,7 @@ type CompanyStore = {
   pagination: {
     cursor: string;
   };
+  unlinked: CompanyWithContacts[];
 };
 
 export const useCompanyStore = defineStore("company", {
@@ -18,6 +19,7 @@ export const useCompanyStore = defineStore("company", {
       pagination: {
         cursor: " ",
       },
+      unlinked: [],
     } as CompanyStore),
 
   actions: {
@@ -36,6 +38,13 @@ export const useCompanyStore = defineStore("company", {
       this.data = [...this.data, ...companies];
       this.total = total;
       this.pagination.cursor = pagination.cursor;
+    },
+
+    async fetchUnlinkedCompanies() {
+      const { companies } = await fetch("/api/company/unlinked").then((res) =>
+        res.json()
+      );
+      this.unlinked = companies;
     },
   },
 });

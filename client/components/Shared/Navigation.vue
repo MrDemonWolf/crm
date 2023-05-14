@@ -1,3 +1,49 @@
+<script setup lang="ts">
+import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
+import {
+  BanknotesIcon,
+  Bars3Icon,
+  BriefcaseIcon,
+  ClipboardIcon,
+  HomeIcon,
+  UsersIcon,
+  XMarkIcon,
+} from "@heroicons/vue/24/outline";
+
+const route = useRoute();
+
+const navigation = [
+  { name: "Dashboard", href: "/", icon: HomeIcon, current: true },
+  { name: "Contacts", href: "/contacts", icon: UsersIcon, current: false },
+  {
+    name: "Companies",
+    href: "/companies",
+    icon: BriefcaseIcon,
+    current: false,
+  },
+  {
+    name: "Projects",
+    href: "/projects",
+    icon: ClipboardIcon,
+    current: false,
+  },
+];
+
+/**
+ * Set the current navigation item based on the current route.
+ */
+navigation.forEach((item) => {
+  item.current = route.path === item.href;
+});
+
+/*
+ *  Get current navigation item
+ */
+const current = computed(() => {
+  return navigation.find((item) => item.current);
+});
+</script>
+
 <template>
   <div class="pb-32 bg-gray-800">
     <Disclosure as="nav" class="bg-gray-800" v-slot="{ open }">
@@ -52,6 +98,7 @@
                 </a>
               </div>
             </div>
+
             <div class="flex -mr-2 md:hidden">
               <!-- Mobile menu button -->
               <DisclosureButton
@@ -75,7 +122,7 @@
           <DisclosureButton
             v-for="item in navigation"
             :key="item.name"
-            as="a"
+            as="nuxt-link"
             :href="item.href"
             :class="[
               item.current
@@ -89,9 +136,8 @@
           <DisclosureButton
             as="a"
             href="https://billing.mrdemonwolf.com"
-            class="block w-full px-5 py-3 font-medium text-center text-indigo-500 bg-gray-900 hover:bg-gray-700 hover:text-white"
-          >
-            Go to billing dashboard
+            class="block px-3 py-2 text-base font-medium text-white bg-indigo-500 rounded-md hover:bg-indigo-700 hover:text-white"
+            >Go to billing
           </DisclosureButton>
         </div>
       </DisclosurePanel>
@@ -99,62 +145,9 @@
     <header class="py-10">
       <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <h1 class="text-3xl font-bold tracking-tight text-white">
-          {{ navigation.find((item) => item.current).name }}
+          {{ current.name }}
         </h1>
       </div>
     </header>
   </div>
-
-  <main class="-mt-32">
-    <div class="px-4 pb-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
-      <slot />
-    </div>
-  </main>
-
-  <SharedFooter />
 </template>
-
-<script setup>
-import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
-import {
-  Bars3Icon,
-  BriefcaseIcon,
-  BanknotesIcon,
-  ClipboardIcon,
-  HomeIcon,
-  UsersIcon,
-  XMarkIcon,
-} from "@heroicons/vue/24/outline";
-
-useHead({
-  bodyAttrs: {
-    class: "bg-gray-600",
-  },
-});
-
-const route = useRoute();
-
-const navigation = [
-  { name: "Dashboard", href: "/", icon: HomeIcon, current: true },
-  { name: "Contacts", href: "/contacts", icon: UsersIcon, current: false },
-  {
-    name: "Companies",
-    href: "/companies",
-    icon: BriefcaseIcon,
-    current: false,
-  },
-  {
-    name: "Projects",
-    href: "/projects",
-    icon: ClipboardIcon,
-    current: false,
-  },
-];
-
-/**
- * Set the current navigation item based on the current route.
- */
-navigation.forEach((item) => {
-  item.current = route.path === item.href;
-});
-</script>

@@ -91,11 +91,23 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "nuxt-headlessui",
     "@pinia/nuxt",
+    "@tailvue/nuxt",
   ],
 
   // https://tailwindcss.nuxtjs.org/
   tailwindcss: {},
 
+  vite: {
+    server: {
+      proxy: {
+        "/api": {
+          target: process.env.API_URL || "http://localhost:8080",
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, ""),
+        },
+      },
+    },
+  },
   // https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-build
   runtimeConfig: {},
 });
