@@ -29,6 +29,9 @@ const createContactErrors = ref({
 
 const createContact = async (newContact: any) => {
   try {
+    /**
+     * Create new contact
+     */
     const { data, pending, error, refresh } = await useFetch("/api/contact", {
       method: "POST",
       headers: {
@@ -53,7 +56,22 @@ const createContact = async (newContact: any) => {
       return;
     }
 
+    /**
+     * Reset form data
+     */
+    createContactData.value.firstName = "";
+    createContactData.value.lastName = "";
+    createContactData.value.email = "";
+    createContactData.value.phoneNumber = "";
+
+    /**
+     * Close modal
+     */
     contact.showAddContactModal.value = false;
+
+    /**
+     * Fetch contacts
+     */
     contact.fetchContacts();
 
     /**

@@ -5,6 +5,8 @@ import { gray, indigo } from "tailwindcss/colors";
 
 import { useCompanyStore } from "~/stores/company";
 
+import { TrashIcon } from "@heroicons/vue/24/solid";
+
 const isLoading = ref(true);
 
 const companies = useCompanyStore();
@@ -18,6 +20,13 @@ const fetchCompanies = async () => {
 const fetchMoreCompanies = async () => {
   isLoading.value = true;
   await companies.fetchMoreCompanies().then(() => {
+    isLoading.value = false;
+  });
+};
+
+const deleteCompany = async (id: string) => {
+  isLoading.value = true;
+  await companies.deleteCompany(id).then(() => {
     isLoading.value = false;
   });
 };
@@ -164,11 +173,16 @@ onMounted(() => {
                     <td
                       class="relative py-4 pl-3 pr-4 text-sm font-medium text-right whitespace-nowrap sm:pr-0"
                     >
-                      <a href="#" class="text-indigo-400 hover:text-indigo-300"
-                        >Edit<span class="sr-only"
-                          >, {{ company.name }}</span
-                        ></a
+                      <button
+                        role="button"
+                        @click.prevent="deleteCompany(company.id)"
+                        class="text-indigo-400 hover:text-indigo-300"
                       >
+                        <TrashIcon class="w-6 h-6 text-red-900" /><span
+                          class="sr-only"
+                          >Delete {{ company.name }}</span
+                        >
+                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -200,4 +214,5 @@ onMounted(() => {
       </div>
     </div>
   </div>
+  <SharedAlertsSuccess />
 </template>

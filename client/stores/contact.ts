@@ -49,11 +49,10 @@ export const useContactStore = defineStore("contacts", {
     } as ContactStore),
 
   actions: {
-    async fetchContacts() {
-      // onluy set data from contacts and set the total and cursor
-      const { contacts, total, pagination } = await fetch("/api/contact").then(
-        (res) => res.json()
-      );
+    async fetchContacts(status: String | undefined = undefined) {
+      const { contacts, total, pagination } = await fetch(
+        `/api/contact?status=${status}`
+      ).then((res) => res.json());
       this.data = contacts;
       this.total = total;
       this.pagination.cursor = pagination.cursor;
@@ -75,13 +74,23 @@ export const useContactStore = defineStore("contacts", {
       this.contact = contact;
     },
 
-    async fetchFilteredContacts(status: String) {
-      const { contacts, total, pagination } = await fetch(
-        `/api/contact?status=${status}`
-      ).then((res) => res.json());
-      this.data = contacts;
-      this.total = total;
-      this.pagination.cursor = pagination.cursor;
+    // async addContact(contact: Contact) {
+    // },
+
+    // async updateContact(contact: Contact) {
+    // },
+
+    async deleteContact(id: string) {
+      const { message } = await fetch(`/api/contact/${id}`, {
+        method: "DELETE",
+      }).then((res) => res.json());
+      this.alert.header = "Success";
+      this.alert.message = message;
+      this.alert.showSuccess = true;
+      this.alert.showError = false;
+
+      // remove the contact from the store
+      this.data = this.data.filter((contact) => contact.id !== id);
     },
   },
 });

@@ -5,19 +5,25 @@ import { gray, indigo } from "tailwindcss/colors";
 
 import { useContactStore } from "@/stores/contact";
 
-import { TrashIcon } from "@heroicons/vue/24/solid";
+import { TrashIcon, UserIcon } from "@heroicons/vue/24/solid";
 
 const isLoading = ref(true);
 const filterStatusSelect = ref("lead");
 
 const contacts = useContactStore();
 
+/**
+ * Fetch contacts
+ */
 const fetchContacts = async () => {
   await contacts.fetchContacts().then(() => {
     isLoading.value = false;
   });
 };
 
+/**
+ * Fetch more contacts
+ */
 const fetchMoreContacts = async () => {
   isLoading.value = true;
   await contacts.fetchMoreContacts().then(() => {
@@ -25,12 +31,26 @@ const fetchMoreContacts = async () => {
   });
 };
 
+/**
+ * Filter contacts by status value
+ */
 const onFilterStatusSelectChange = async (e: Event) => {
   isLoading.value = true;
   const filterStatusValue = (e.target as HTMLSelectElement).value;
-  await contacts.fetchFilteredContacts(filterStatusValue as string);
+  await contacts.fetchContacts(filterStatusValue as string);
   isLoading.value = false;
 };
+
+/**
+ * Delete contact
+ */
+const deleteContact = async (contactId: string) => {
+  await contacts.deleteContact(contactId);
+};
+
+/**
+ * Edit SEO Meta
+ */
 useHead({
   title: "Contacts",
   meta: [
@@ -42,6 +62,9 @@ useHead({
   ],
 });
 
+/**
+ * Fetch contacts on page load
+ */
 onMounted(() => {
   fetchContacts();
 });
@@ -144,6 +167,19 @@ onMounted(() => {
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-800">
+                  <tr class="sm:pl-0" v-if="contacts.data.length === 0">
+                    <td colspan="4" class="py-4 pl-4 pr-3">
+                      <UserIcon class="w-12 h-12 mx-auto text-gray-200" />
+                      <div class="mt-4 text-center">
+                        <h3 class="mt-2 text-sm font-semibold text-white">
+                          No contacts found
+                        </h3>
+                        <p class="mt-1 text-sm text-gray-200">
+                          Get started by creating a new contact.
+                        </p>
+                      </div>
+                    </td>
+                  </tr>
                   <tr v-for="contact in contacts.data" :key="contact['id']">
                     <td
                       class="py-4 pl-4 pr-3 text-sm font-medium text-white whitespace-nowrap sm:pl-0"
@@ -203,12 +239,16 @@ onMounted(() => {
                     <td
                       class="relative py-4 pl-3 pr-4 text-sm font-medium text-right whitespace-nowrap sm:pr-0"
                     >
-                      <a href="#" class="text-indigo-400 hover:text-indigo-300"
-                        ><TrashIcon class="w-6 h-6 text-red-900" /><span
+                      <button
+                        role="button"
+                        @click.prevent="deleteContact(contact.id)"
+                        class="text-indigo-400 hover:text-indigo-300"
+                      >
+                        <TrashIcon class="w-6 h-6 text-red-900" /><span
                           class="sr-only"
                           >Delete {{ contact.firstName }}</span
-                        ></a
-                      >
+                        >
+                      </button>
                     </td>
                   </tr>
                 </tbody>

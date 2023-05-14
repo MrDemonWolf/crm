@@ -9,6 +9,15 @@ type CompanyStore = {
     cursor: string;
   };
   unlinked: CompanyWithContacts[];
+  showAddCompanyModal: {
+    value: boolean;
+  };
+  alert: {
+    header: string;
+    message: string;
+    showSuccess: boolean;
+    showError: boolean;
+  };
 };
 
 export const useCompanyStore = defineStore("company", {
@@ -20,6 +29,15 @@ export const useCompanyStore = defineStore("company", {
         cursor: " ",
       },
       unlinked: [],
+      showAddCompanyModal: {
+        value: false,
+      },
+      alert: {
+        header: "",
+        message: "",
+        showSuccess: false,
+        showError: false,
+      },
     } as CompanyStore),
 
   actions: {
@@ -45,6 +63,29 @@ export const useCompanyStore = defineStore("company", {
         res.json()
       );
       this.unlinked = companies;
+    },
+
+    // async createCompany(company: CompanyWithAddressAndContacts) {
+    //   const res = await fetch("/api/company", {
+    //     method: "POST",
+    //     body: JSON.stringify(company),
+    //   });
+    //   if (res.ok) {
+    //     this.data = [...this.data, company];
+    //   }
+    // }
+
+    async deleteCompany(id: String) {
+      const { message } = await fetch(`/api/company/${id}`, {
+        method: "DELETE",
+      }).then((res) => res.json());
+      this.alert.header = "Success";
+      this.alert.message = message;
+      this.alert.showSuccess = true;
+      this.alert.showError = false;
+
+      // remove the contact from the store
+      this.data = this.data.filter((company) => company.id !== id);
     },
   },
 });
