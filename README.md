@@ -10,18 +10,13 @@
 
 ✅ Intuitive Dashboard: Get a bird's-eye view of your business with an easy-to-use dashboard, providing real-time insights and actionable data.
 
-📊 Customer Management: Efficiently manage customer information, including contact details,
-communication history, and personalized notes.
+📊 Customer Management: Efficiently manage customer information, including contact details, communication history, and personalized notes.
 
-📅 Task & Calendar Integration: Stay organized by scheduling and tracking important tasks,
+📅 Project Task Management: Stay organized by creating and managing tasks within each company project, ensuring smooth project execution.
 
-appointments, and deadlines in one centralized location.
+💼 Deal Management: Track and manage the progress of deals within each company project, ensuring effective deal tracking and forecasting.
 
-📧 Email Integration: Seamlessly integrate your email accounts to streamline communication and ensure prompt follow-ups.
-
-💼 Deal Management: Track and manage your sales pipeline, from leads to closed deals, enabling effective deal tracking and forecasting.
-
-📈 Analytics & Reporting: Gain valuable insights into your business performance with comprehensive analytics and customizable reports.
+📈 Analytics & Reporting: Gain valuable insights into project performance with comprehensive analytics and customizable reports.
 
 🔐 Secure & Scalable: Built with robust security measures, ensuring the safety of your data, and designed to accommodate your business growth.
 
