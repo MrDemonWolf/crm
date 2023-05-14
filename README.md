@@ -28,7 +28,7 @@ Frontend: TailwindCSS
 
 ## 🛠️ Installation Instructions:
 
-1️⃣ Clone the repository: `git clone https://github.com/your-username/repository-name.git`
+1️⃣ Clone the repository: `git clone https://github.com/mrdemonwolf/crm.git`
 
 2️⃣ Install dependencies for the server: `cd server && npm install`
 
@@ -54,9 +54,9 @@ Frontend: TailwindCSS
 
 3️⃣ Customize settings and generate reports tailored to your business needs.
 
-## License
+## Copyright
 
-![GitHub license](https://img.shields.io/github/license/MrDemonWolf/share.svg?style=for-the-badge&logo=github)
+MrDemonWolf, Inc. © 2023. All rights reserved but licensed under [MIT License](LICENSE.md).
 
 ## Let's get connected
 
