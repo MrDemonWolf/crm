@@ -2,23 +2,62 @@
     <img src="logo.png"/>
 </p>
 
-# What is CRM?
+# 🚀 CRM System for Small Businesses | NodeJS, Express, Prisma, PostgreSQL, TailwindCSS
 
-CRM system for a small business. Built with NodeJS, Express, MongoDB, and TailwindCSS. This is used by my busienss.
+📝 Simplify your business operations with our powerful CRM system built specifically for small businesses. Seamlessly manage your customer relationships, streamline workflows, and boost productivity.
 
-## Getting started
+## 🔑 Key Features:
 
-Install the dependencies with in all folders such as server,worker, and client.
+✅ Intuitive Dashboard: Get a bird's-eye view of your business with an easy-to-use dashboard, providing real-time insights and actionable data.
 
-```bash
-npm install
-```
+📊 Customer Management: Efficiently manage customer information, including contact details,
+communication history, and personalized notes.
 
-Start the server
+📅 Task & Calendar Integration: Stay organized by scheduling and tracking important tasks,
 
-```bash
-npm start
-```
+appointments, and deadlines in one centralized location.
+
+📧 Email Integration: Seamlessly integrate your email accounts to streamline communication and ensure prompt follow-ups.
+
+💼 Deal Management: Track and manage your sales pipeline, from leads to closed deals, enabling effective deal tracking and forecasting.
+
+📈 Analytics & Reporting: Gain valuable insights into your business performance with comprehensive analytics and customizable reports.
+
+🔐 Secure & Scalable: Built with robust security measures, ensuring the safety of your data, and designed to accommodate your business growth.
+
+## ⚙️ Technologies & Frameworks:
+
+Backend: NodeJS, Express, Prisma
+Database: PostgreSQL
+Frontend: TailwindCSS
+
+## 🛠️ Installation Instructions:
+
+1️⃣ Clone the repository: `git clone https://github.com/your-username/repository-name.git`
+
+2️⃣ Install dependencies for the server: `cd server && npm install`
+
+3️⃣ Install dependencies for the client: `cd client && npm install`
+
+4️⃣ Configure the PostgreSQL connection in `server/config.js`
+
+5️⃣ Run Prisma migrations: `cd server && npx prisma migrate dev`
+
+6️⃣ Start the server: `cd server && npm start`
+
+7️⃣ Start the client: `cd client && npm start`
+
+8️⃣ Start the worker: `cd worker && npm start`
+
+9️⃣ Visit `http://localhost:3000` in your browser
+
+## 📚 Usage Instructions:
+
+1️⃣ Create an account and log in to access the CRM system.
+
+2️⃣ Explore the dashboard, manage customers, tasks, and deals.
+
+3️⃣ Customize settings and generate reports tailored to your business needs.
 
 ## License
 
